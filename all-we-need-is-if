@@ -1,0 +1,53 @@
+#!/usr/bin/racket
+#lang racket
+
+;;; This Racket file is completely over-engineered and could have been implemented in Bash.
+;;; But where would be the fun? Bash is no fun.
+
+(require
+  racket/date
+  (only-in srfi/19 string->date))
+
+(define (count-ifs folder)
+  (string-trim
+    (with-output-to-string
+      (lambda ()
+        (system (format "grep -ore 'if' ~a | wc -l" folder)
+                #:set-pwd? #t)))
+    "\n"))
+
+(define (save-to-file filepath result)
+  (call-with-output-file filepath #:mode 'text #:exists 'append
+    (lambda (out)
+      (displayln result out))))
+
+(define (format-result date folder count)
+  (parameterize ([date-display-format 'iso-8601])
+    (format "~a,'~a',~a;"
+            (date->string date #t)
+            folder
+            count)))
+
+(define db-path (make-parameter #f))
+(define the-date (make-parameter (current-date)))
+
+(define folder
+  (command-line
+    #:program "all-we-need-is-if"
+    #:once-each
+    [("-d" "--database") path
+                         "Path to the CSV file to populate"
+                         (db-path path)]
+    [("-f" "--fake-date") date-string
+                          "Fake date to use instead of now"
+                          (the-date (string->date date-string "~Y-~m-~dT~H:~M:~S"))]
+    #:args ([folder "."])
+    folder))
+
+(when folder
+  (define result (format-result (the-date)
+                                folder
+                                (count-ifs folder)))
+  (if (db-path)
+    (save-to-file (db-path) result)
+    (displayln result)))
