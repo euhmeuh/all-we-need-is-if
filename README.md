@@ -20,6 +20,10 @@ $ all-we-need-is-if
 
 * You could setup a cron to keep track of your KPIs in real time!
 
+* Use GNU plot to generate a graph automagically.
+
+* Setup a dashboard online that proudly presents your hottest KPI
+
 ## Is this a joke?
 
 `:)`
