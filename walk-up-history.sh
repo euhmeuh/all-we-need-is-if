@@ -26,7 +26,7 @@ cd $GIT_REPO
 commit_date=`git_current_date`
 while [[ 1 ]]
 do
-  all-we-need-is-if --database $DB_PATH --fake-date $commit_date ./client/app
+  all-we-need-is-if --database $DB_PATH --fake-date $commit_date
   message=`git_move_to_previous_commit 2>&1`
   if [[ $message == fatal* ]]
   then
