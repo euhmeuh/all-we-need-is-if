@@ -31,6 +31,8 @@ since the beginning of times by walking through your repository's history!
 
 * All this code could have been implemented in Bash only. So if you don't want to install Racket, you can just refactor a bit the bash file to run the grep command itself and push the result in a csv file. I just felt like I wanted to code in Racket.
 
+* All this code could have been implemented in Racket only. So if you don't like Bash, just do the thing, you know.
+
 * You could setup a cron to keep track of your KPIs in real time!
 
 ## Is this a joke?
