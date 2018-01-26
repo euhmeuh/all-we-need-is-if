@@ -1,53 +1,39 @@
-#!/usr/bin/racket
-#lang racket
+#!/bin/bash
 
-;;; This Racket file is completely over-engineered and could have been implemented in Bash.
-;;; But where would be the fun? Bash is no fun.
+# Walk up through a repository's history and report the number of "if" in a CSV file.
+# With all those KPIs you can make beautiful graphics for your powerpoint presentations.
+# Because the number of "if" in your code should be the most precious insight of software quality.
+# Don't let anyone tell you otherwise.
 
-(require
-  racket/date
-  (only-in srfi/19 string->date))
+GIT_URL=https://github.com/user/your-repo.git
+GIT_REPO=your-repo
+FOLDER=.
+DB_PATH=/home/user/result.csv
 
-(define (count-ifs folder)
-  (string-trim
-    (with-output-to-string
-      (lambda ()
-        (system (format "grep -ore 'if' ~a | wc -l" folder)
-                #:set-pwd? #t)))
-    "\n"))
+count_if () {
+  echo `grep -ore 'if' $FOLDER | wc -l`
+}
 
-(define (save-to-file filepath result)
-  (call-with-output-file filepath #:mode 'text #:exists 'append
-    (lambda (out)
-      (displayln result out))))
+git_move_to_previous_commit () {
+	git reset --hard HEAD^1
+}
 
-(define (format-result date folder count)
-  (parameterize ([date-display-format 'iso-8601])
-    (format "~a,'~a',~a;"
-            (date->string date #t)
-            folder
-            count)))
+git_current_date () {
+	echo `git show -s --format=%cI HEAD`
+}
 
-(define db-path (make-parameter #f))
-(define the-date (make-parameter (current-date)))
+git clone $GIT_URL
+cd $GIT_REPO
 
-(define folder
-  (command-line
-    #:program "all-we-need-is-if"
-    #:once-each
-    [("-d" "--database") path
-                         "Path to the CSV file to populate"
-                         (db-path path)]
-    [("-f" "--fake-date") date-string
-                          "Fake date to use instead of now"
-                          (the-date (string->date date-string "~Y-~m-~dT~H:~M:~S"))]
-    #:args ([folder "."])
-    folder))
-
-(when folder
-  (define result (format-result (the-date)
-                                folder
-                                (count-ifs folder)))
-  (if (db-path)
-    (save-to-file (db-path) result)
-    (displayln result)))
+commit_date=`git_current_date`
+while [[ 1 ]]
+do
+  echo "$commit_date,`count_if`;" >> $DB_PATH
+  message=`git_move_to_previous_commit 2>&1`
+  if [[ $message == fatal* ]]
+  then
+    break
+  fi
+  echo $message
+  commit_date=`git_current_date`
+done

@@ -1,40 +1,25 @@
 # all-we-need-is-if
-Count the number of "if" in your code.
+Count the number of "if" in your code by walking up your repository's history.
 
 ## Usage
 
 ```
 ~/git/my-repo$ all-we-need-is-if
-~/git/my-repo$ all-we-need-is-if --database kpi.csv ./only/in/this/folder
-~/git/my-repo$ all-we-need-is-if --fake-date 1969-01-01T09:30:00
 ```
 
 ## Requirements
 
-```
-$ sudo apt-get install racket
-$ sudo pacman -S racket
-$ my-favorite-package-manager install racket
-```
+You need to edit the global variables to fit your project:
 
-## Walk up through git history
-
-If you want to generate lots of KPI, you can study the evolution of the number of "if" in your code
-since the beginning of times by walking through your repository's history!
-
-```
-~/git/my-repo$ vi walk-up-history.sh # you want to change global variables in this file
-~/git/my-repo$ walk-up-history.sh
-```
+`GIT_URL`: the url to clone
+`GIT_REPO`: the name of the repo root folder
+`FOLDER`: an optional specific folder to scan in your repo (defaults to '.')
+`DB_PATH`: the path to the CSV file used as a database for this important KPI
 
 ## Improvement tips
-
-* All this code could have been implemented in Bash only. So if you don't want to install Racket, you can just refactor a bit the bash file to run the grep command itself and push the result in a csv file. I just felt like I wanted to code in Racket.
-
-* All this code could have been implemented in Racket only. So if you don't like Bash, just do the thing, you know.
 
 * You could setup a cron to keep track of your KPIs in real time!
 
 ## Is this a joke?
 
-`#t`
+`:)`
