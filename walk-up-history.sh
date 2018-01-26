@@ -11,11 +11,11 @@ GIT_REPO=your-repo
 DB_PATH=/home/user/result.csv
 
 git_move_to_previous_commit () {
-	git reset --hard HEAD^1
+  git reset --hard HEAD^1
 }
 
 git_current_date () {
-	echo `git show -s --format=%cI HEAD`
+  echo `git show -s --format=%cI HEAD`
 }
 
 cd $GIT_PATH
