@@ -20,7 +20,7 @@ $ my-favorite-package-manager install racket
 ## Walk up through git history
 
 If you want to generate lots of KPI, you can study the evolution of the number of "if" in your code
-since the beggining of times by walking through your repository's history!
+since the beginning of times by walking through your repository's history!
 
 ```
 ~/git/my-repo$ vi walk-up-history.sh # you want to change global variables in this file
